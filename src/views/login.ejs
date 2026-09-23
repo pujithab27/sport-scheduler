@@ -1,0 +1,6 @@
+<div class="panel narrow"><h1>Sign in</h1><p>New player? <a href="/signup">Create an account</a>.</p>
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+<form method="post" action="/login"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Email<input name="email" type="email" required autocomplete="email"></label>
+<label>Password<input name="password" type="password" required autocomplete="current-password"></label>
+<button>Sign in</button></form></div>

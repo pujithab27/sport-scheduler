@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sport Scheduler</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="wrap nav"><a class="brand" href="/sessions"><span class="brand-mark" aria-hidden="true">S</span>Sport Scheduler</a><nav aria-label="Main navigation">
+<% if (user) { %><a href="/sessions">Sessions</a><a href="/sessions/new">Create session</a><% if (user.role === 'admin') { %><a href="/sports">Sports</a><a href="/admin/reports">Reports</a><% } %><span class="user"><%= user.name %> (<%= user.role %>)</span><form method="post" action="/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="link-button">Sign out</button></form><% } else { %><a href="/login">Sign in</a><a href="/signup">Sign up</a><% } %>
+</nav></div></header>
+<main class="wrap" id="main-content"><% if (notice) { %><p class="notice" role="status"><%= notice %></p><% } %><%- include(page) %></main>
+</body></html>

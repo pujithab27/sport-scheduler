@@ -1,0 +1,7 @@
+<div class="panel narrow"><h1>Create a player account</h1><p>Already registered? <a href="/login">Sign in</a>.</p>
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+<form method="post" action="/signup"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Name<input name="name" required maxlength="100" autocomplete="name" value="<%= values.name || '' %>"></label>
+<label>Email<input name="email" type="email" required maxlength="254" autocomplete="email" value="<%= values.email || '' %>"></label>
+<label>Password<input name="password" type="password" required minlength="12" autocomplete="new-password"><small>At least 12 characters.</small></label>
+<button>Create account</button></form></div>

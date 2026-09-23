@@ -1,0 +1,10 @@
+<div class="panel"><p class="eyebrow">Organize a match</p><h1>Create a session</h1><p class="lede">Choose the sport, place, and time, then list the players already available.</p><% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+<% if (!sports.length) { %><p>An administrator must create a sport before sessions can be scheduled.</p><% } else { %>
+<form method="post" action="/sessions"><input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="timezone_offset" id="timezone-offset" value="0">
+<div class="form-grid"><label>Sport<select name="sport_id" required><option value="">Choose a sport</option><% sports.forEach(sport => { %><option value="<%= sport.id %>" <%= String(values.sport_id || '') === String(sport.id) ? 'selected' : '' %>><%= sport.name %></option><% }) %></select></label>
+<label>Date and time<input name="starts_at" type="datetime-local" required value="<%= values.starts_at || '' %>"></label>
+<label>Venue<input name="venue" required maxlength="200" value="<%= values.venue || '' %>"></label>
+<label>Additional places needed<input name="extra_capacity" type="number" min="0" max="100" required value="<%= values.extra_capacity ?? '' %>"><small>Total open places across both teams.</small></label></div>
+<div class="form-grid"><label>Team 1 players already available<textarea name="team1" rows="5" placeholder="One name per line"><%= values.team1 || '' %></textarea></label><label>Team 2 players already available<textarea name="team2" rows="5" placeholder="One name per line"><%= values.team2 || '' %></textarea></label></div>
+<p class="hint">Existing players are entered by name. Joining users choose a team when they claim an additional place.</p><button>Create session</button></form>
+<script>document.getElementById('timezone-offset').value = new Date().getTimezoneOffset();</script><% } %></div>
