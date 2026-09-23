@@ -48,6 +48,18 @@ Render Free can host the web app. Its filesystem is temporary, so use a hosted P
 
 Never commit `DATABASE_URL`, `SESSION_SECRET`, or passwords to GitHub. Render Free may sleep when idle, so its first request after a pause can be slow. Check Render and Neon for their current free-plan limits.
 
+## Deployment: Vercel + Neon
+
+The root `app.js` exports the Express application for Vercel. The local `npm start` command still runs the regular server. Vercel's filesystem does not persist application data, so a hosted PostgreSQL database is required.
+
+1. Create a Neon PostgreSQL project and copy its connection string. Keep it private.
+2. In Vercel, import the GitHub repository. Select the Express framework and Node.js 24. Leave the root directory at the repository root.
+3. In Project Settings → Environment Variables, set `DATABASE_URL` to the Neon connection string, `SESSION_SECRET` to a random string of at least 32 characters, `NODE_ENV` to `production`, and `TRUST_PROXY` to `1`.
+4. To create the first administrator, also set `BOOTSTRAP_ADMIN_NAME`, `BOOTSTRAP_ADMIN_EMAIL`, and `BOOTSTRAP_ADMIN_PASSWORD` (at least 12 characters). Deploy to Production. The app creates the tables and first administrator on startup.
+5. Open the Vercel URL and sign in as the administrator. Remove the three `BOOTSTRAP_ADMIN_*` variables and redeploy; the account remains in Neon.
+
+Add all environment variables to Production, and to Preview too if you want Preview deployments to work. Preview and Production should use separate databases to prevent testing from changing the live data. Do not set `DB_PATH` on Vercel, and never commit connection strings or passwords to GitHub.
+
 ## Match rules
 
 - Additional places are counted across both teams; a joining user chooses a team.
