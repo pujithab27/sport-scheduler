@@ -60,10 +60,15 @@ test('account, sport, session, join, cancellation and report workflow', async ()
     assert.equal(response.status, 302);
     const id = Number(response.location.split('/').pop());
     assert.ok(id > 0);
+    page = await player('/sessions');
+    assert.match(page.html, /Your own sessions appear under/);
+    assert.match(page.html, /Created by me[\s\S]*City Ground/);
 
     page = await another('/signup');
     response = await another('/signup', { method: 'POST', data: { _csrf: token(page.html), name: 'Player Two', email: 'two@example.com', password: 'password-12345' } });
     assert.equal(response.status, 302);
+    page = await another('/sessions');
+    assert.match(page.html, /Available to join[\s\S]*City Ground[\s\S]*Created by me/);
     page = await another(`/sessions/${id}`);
     response = await another(`/sessions/${id}/join`, { method: 'POST', data: { _csrf: token(page.html), team: '2' } });
     assert.equal(response.status, 302);
